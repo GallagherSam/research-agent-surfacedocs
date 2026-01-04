@@ -1,6 +1,6 @@
 # ArXiv Research Agent
 
-> **Read the full article:** [Blog Post](https://medium.com/@gallaghersam95/building-an-autonomous-research-agent-with-google-adk-faf9e1dbd8a1?postPublishedType=initial)]
+> **Read the full article:** [Blog Post](https://medium.com/@gallaghersam95/building-an-autonomous-research-agent-with-google-adk-faf9e1dbd8a1)]
 
 An autonomous AI agent that searches ArXiv, reads academic papers, and produces research summaries. Built with Google ADK and SurfaceDocs.
 
