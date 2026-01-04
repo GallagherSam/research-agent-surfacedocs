@@ -1,6 +1,15 @@
+import logging
+
 from fastapi import FastAPI
 
 from api.routes import router
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    datefmt="%H:%M:%S",
+)
 
 app = FastAPI(
     title="ArXiv Research Agent",

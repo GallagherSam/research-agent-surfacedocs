@@ -35,7 +35,7 @@ Your final document should include:
 
 ## Paper Links
 
-Always include links to the arXiv papers you reference. Use the arXiv abstract URL format: `https://arxiv.org/abs/{arxiv_id}` (e.g., https://arxiv.org/abs/2401.12345). When mentioning a paper, link it inline like: [Paper Title](https://arxiv.org/abs/2401.12345).
+Always include links to the arXiv papers you reference. Use the arXiv abstract URL format (e.g., https://arxiv.org/abs/2401.12345). When mentioning a paper, link it inline like: [Paper Title](https://arxiv.org/abs/2401.12345).
 
 ## Important
 

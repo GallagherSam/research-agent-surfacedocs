@@ -44,5 +44,6 @@ htmlcov/
 docs/
 AGENTS/
 prior/
+article/
 
 .DS_Store

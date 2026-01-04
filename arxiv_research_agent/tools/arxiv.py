@@ -1,9 +1,13 @@
 """ArXiv tools for the research agent."""
 
+import logging
+
 from google.adk.tools import ToolContext
 
 from arxiv_research_agent.services import ArxivClient, PaperFetcher
 from arxiv_research_agent.config import settings
+
+logger = logging.getLogger(__name__)
 
 
 async def search_arxiv(
@@ -31,6 +35,7 @@ async def search_arxiv(
     max_calls = settings.max_arxiv_calls
 
     if calls_used >= max_calls:
+        logger.warning("🚫 search_arxiv: API call limit reached (%d/%d)", calls_used, max_calls)
         return {
             "status": "error",
             "error": f"ArXiv API call limit reached ({max_calls} calls max).",
@@ -40,12 +45,17 @@ async def search_arxiv(
     # Increment call counter
     tool_context.state["arxiv_calls_used"] = calls_used + 1
 
+    logger.info("🔍 search_arxiv: query='%s', days_back=%d, max_results=%d (call %d/%d)",
+                query, days_back, max_results, calls_used + 1, max_calls)
+
     client = ArxivClient()
     papers = await client.search(
         query=query,
         days_back=min(days_back, 30),
         max_results=min(max_results, 50),
     )
+
+    logger.info("📄 search_arxiv: found %d papers", len(papers))
 
     return {
         "status": "success",
@@ -77,10 +87,13 @@ async def fetch_paper_content(arxiv_id: str, tool_context: ToolContext) -> dict:
     Returns:
         Dict with paper title and full text content.
     """
+    logger.info("📖 fetch_paper_content: fetching paper %s", arxiv_id)
+
     fetcher = PaperFetcher()
     content = await fetcher.fetch(arxiv_id)
 
     if content is None:
+        logger.warning("❌ fetch_paper_content: could not fetch paper %s", arxiv_id)
         return {
             "status": "error",
             "error": f"Could not fetch paper {arxiv_id}. It may not have an HTML version.",
@@ -90,6 +103,8 @@ async def fetch_paper_content(arxiv_id: str, tool_context: ToolContext) -> dict:
     papers_read = tool_context.state.get("papers_read", [])
     papers_read.append(arxiv_id)
     tool_context.state["papers_read"] = papers_read
+
+    logger.info("✅ fetch_paper_content: fetched '%s' (%d chars)", content.title[:50], len(content.content))
 
     return {
         "status": "success",

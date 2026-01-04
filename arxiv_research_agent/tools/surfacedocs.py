@@ -1,8 +1,12 @@
 """Surfacedocs tool for saving research output."""
 
+import logging
+
 from surfacedocs import SurfaceDocs
 
 from arxiv_research_agent.config import settings
+
+logger = logging.getLogger(__name__)
 
 
 async def save_document(document: dict) -> dict:
@@ -39,12 +43,18 @@ async def save_document(document: dict) -> dict:
     if "metadata" not in document:
         document["metadata"] = {"source": "arxiv-research-agent"}
 
+    title = document.get("title", "Untitled")
+    block_count = len(document.get("blocks", []))
+    logger.info("💾 save_document: saving '%s' (%d blocks)", title, block_count)
+
     client = SurfaceDocs(api_key=settings.surfacedocs_api_key)
 
     result = client.save(
         document,
         folder_id=settings.surfacedocs_folder_id,
     )
+
+    logger.info("✅ save_document: saved to %s", result.url)
 
     return {
         "status": "success",
