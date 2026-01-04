@@ -1,0 +1,15 @@
+[project]
+name = "arxiv-research-agent"
+version = "0.1.0"
+description = "AI agent for researching ArXiv papers and generating summaries"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "google-adk",
+    "pydantic-settings",
+    "httpx",
+    "feedparser",
+    "surfacedocs",
+]
